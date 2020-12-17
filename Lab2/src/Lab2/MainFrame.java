@@ -132,6 +132,88 @@ import javax.swing.JTextField;
             hboxVariables.add(textFieldZ);
 
 // Область для вывода результата вычислений
+            addMemoryRadioButton("Переменная 1", 1);
+            addMemoryRadioButton("Переменная 2", 2);
+            addMemoryRadioButton("Переменная 3", 3);
+            radioMemoryButtons.setSelected(radioMemoryButtons.getElements().nextElement().getModel(), true);
+
+// Область для кнопок MC, M+
+            Box memoryResult = Box.createHorizontalBox();
+            memoryResult.add(Box.createHorizontalGlue());
+            JButton MC = new JButton("MC");
+            MC.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent ev)
+                {
+                    if (memoryId == 1)	{mem1 = 0.0;}
+                    if (memoryId == 2)	{mem2 = 0.0;}
+                    if (memoryId == 3)	{mem3 = 0.0;}
+                }
+            });
+
+            JButton M_Plus=new JButton("M+");
+            M_Plus.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent arg0)
+                {
+
+                    try
+                    {
+                        Double x = Double.parseDouble(textFieldX.getText());
+                        Double y = Double.parseDouble(textFieldY.getText());
+                        Double z = Double.parseDouble(textFieldZ.getText());
+
+                        if (formulaId == 1)
+                        {
+                            if (memoryId == 1)
+                            {
+                                mem1 += calculate1(x, y, z);
+                                textFieldResult.setText(mem1.toString());
+                            }
+                            if (memoryId == 2)
+                            {
+                                mem2 += calculate1(x, y, z);
+                                textFieldResult.setText(mem2.toString());
+                            }
+                            if (memoryId == 3)
+                            {
+                                mem3 += calculate1(x, y, z);
+                                textFieldResult.setText(mem3.toString());
+                            }
+                        }
+                        if (formulaId == 2)
+                        {
+                            if (memoryId == 1)
+                            {
+                                mem1 += calculate2(x, y, z);
+                                textFieldResult.setText(mem1.toString());
+                            }
+                            if (memoryId == 2)
+                            {
+                                mem2 += calculate2(x, y, z);
+                                textFieldResult.setText(mem2.toString());
+                            }
+                            if (memoryId == 3)
+                            {
+                                mem3 += calculate2(x, y, z);
+                                textFieldResult.setText(mem3.toString());
+                            }
+                        }
+
+                    }
+                    catch (NumberFormatException ex)
+                    {
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Ошибка в формате записи числа с плавающей точкой", "" +
+                                        "Ошибочный формат числа", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+
+            memoryResult.add(M_Plus);
+            memoryResult.add(Box.createHorizontalStrut(10));
+            memoryResult.add(MC);
+            memoryResult.add(Box.createHorizontalGlue());
             JLabel labelForResult = new JLabel("Результат:");
             labelForResult = new JLabel("Результат:");
             textFieldResult = new JTextField("0", 15);
@@ -195,6 +277,8 @@ import javax.swing.JTextField;
             contentBox.add(Box.createVerticalGlue());
             contentBox.add(hboxFormulaType);
             contentBox.add(hboxVariables);
+            contentBox.add(hboxMemoryType);
+            contentBox.add(memoryResult);
             contentBox.add(hboxResult);
             contentBox.add(hboxButtons);
             contentBox.add(Box.createVerticalGlue());
