@@ -131,11 +131,62 @@ import javax.swing.JTextField;
             hboxVariables.add(Box.createHorizontalStrut(10));
             hboxVariables.add(textFieldZ);
 
+// Область для вывода результата вычислений
+            JLabel labelForResult = new JLabel("Результат:");
+            labelForResult = new JLabel("Результат:");
+            textFieldResult = new JTextField("0", 15);
+            textFieldResult.setMaximumSize(textFieldResult.getPreferredSize());
+            Box hboxResult = Box.createHorizontalBox();
+            hboxResult.add(Box.createHorizontalGlue());
+            hboxResult.add(labelForResult);
+            hboxResult.add(Box.createHorizontalStrut(10));
+            hboxResult.add(textFieldResult);
+            hboxResult.add(Box.createHorizontalGlue());
+            hboxResult.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
+// Область для кнопок
+            JButton buttonCalc = new JButton("Вычислить");
+            buttonCalc.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent ev)
+                {
+                    try
+                    {
+                        Double x = Double.parseDouble(textFieldX.getText());
+                        Double y = Double.parseDouble(textFieldY.getText());
+                        Double z = Double.parseDouble(textFieldZ.getText());
+                        Double result;
+                        if (formulaId == 1)
+                            result = calculate1(x, y, z);
+                        else
+                            result = calculate2(x, y, z);
+                        textFieldResult.setText(result.toString());
+                    }
+                    catch (NumberFormatException ex)
+                    {
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Ошибка в формате записи числа с плавающей точкой", "Ошибочный формат числа",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+            JButton buttonReset = new JButton("Очистить поля");
+            buttonReset.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent ev)
+                {
+                    textFieldX.setText("0");
+                    textFieldY.setText("0");
+                    textFieldZ.setText("0");
+                    textFieldResult.setText("0");
+                }
+            });
 
             Box hboxButtons = Box.createHorizontalBox();
             hboxButtons.add(Box.createHorizontalGlue());
+            hboxButtons.add(buttonCalc);
             hboxButtons.add(Box.createHorizontalStrut(30));
+            hboxButtons.add(buttonReset);
             hboxButtons.add(Box.createHorizontalGlue());
             hboxButtons.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
@@ -144,6 +195,8 @@ import javax.swing.JTextField;
             contentBox.add(Box.createVerticalGlue());
             contentBox.add(hboxFormulaType);
             contentBox.add(hboxVariables);
+            contentBox.add(hboxResult);
+            contentBox.add(hboxButtons);
             contentBox.add(Box.createVerticalGlue());
             getContentPane().add(contentBox, BorderLayout.CENTER);
         }
